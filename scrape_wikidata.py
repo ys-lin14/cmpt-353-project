@@ -115,8 +115,8 @@ def main(input_file, osm_output_file, wikidata_output_file):
         - It takes approximately 1 to 2 seconds to scrape each Wikidata
           entry. Running the program with the provided OSM data may take
           a few minutes.
-        - Upon receiving a bad request the program will stop scraping Wikidata
-          and process the data it managed to retrieve.
+        - Upon receiving a bad HTTP response the program will stop scraping
+          Wikidata and process the data it managed to retrieve.
     """
     
     # trailing data error - line adapted from
@@ -126,7 +126,7 @@ def main(input_file, osm_output_file, wikidata_output_file):
     osm_data['qid'] = osm_data['tags'].apply(get_qid)
     unique_qids = osm_data['qid'].dropna().unique()
 
-    # create dict with (qid, response) key value pairs
+    # create a dictionary with (qid, response) key value pairs
     wikidata_responses = {} 
     for qid in tqdm(unique_qids):
         # exception handling adapted from jouell's answer at
@@ -144,7 +144,7 @@ def main(input_file, osm_output_file, wikidata_output_file):
 
     wikidata = pd.DataFrame(unique_qids, columns=['qid'])
     
-    # get names and descriptions for each Wikidata entry using qid
+    # get the names and description for each Wikidata entry using qid
     wikidata['names'] = (
         wikidata['qid'].apply(lambda qid: get_names(wikidata_responses[qid]))
     )
@@ -152,10 +152,10 @@ def main(input_file, osm_output_file, wikidata_output_file):
         wikidata['qid'].apply(lambda qid: get_description(wikidata_responses[qid]))
     )
 
-    # write osm_data with qid column to json
+    # write osm_data with qid column to a json file
     osm_data.to_json(osm_output_file)
 
-    # write wikidata qid, names and description to json
+    # write Wikidata qid, names and description to a json file
     wikidata.to_json(wikidata_output_file)
 
 if __name__ == '__main__':
