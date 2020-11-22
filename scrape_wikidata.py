@@ -48,7 +48,7 @@ def get_names(wikidata_response):
         names (list): names for the Wikidata entry
         
     Example:
-        Calling get_names with the reponse for McDonald's Wikidata page 
+        Calling get_names with the response from McDonald's Wikidata page 
         returns [
             'McDonald’s', 'McD', 'Mcdonalds', "McDonald's Corporation",
             "McDonald's Restaurant", "McDonald's", 'McDonald', "Mickey D's"
@@ -72,11 +72,11 @@ def get_description(wikidata_response):
         
     Returns:
         description (str): 
-            description for the Wikidata entry - returns empty string if
-            the Wikidata page does not have a description
+            description for the Wikidata entry - returns an empty string 
+            if the Wikidata page does not have a description
     
     Example:
-        Calling get_description with the reponse for McDonald's Wikidata page 
+        Calling get_description with the reponse from McDonald's Wikidata page 
         returns 'American fast food restaurant chain'
     """
     
@@ -141,6 +141,7 @@ def main(input_file, osm_output_file, wikidata_output_file):
         wikidata_responses[qid] = wikidata_response
         time.sleep(1)
 
+    # create dataframe with the qids that were successfully fetched
     fetched_qids = list(wikidata_responses.keys())
     wikidata = pd.DataFrame(fetched_qids, columns=['qid'])
     
