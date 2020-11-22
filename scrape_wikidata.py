@@ -48,7 +48,7 @@ def get_names(wikidata_response):
         names (list): names for the Wikidata entry
         
     Example:
-        Calling get_names with the response from McDonald's Wikidata page 
+        Calling get_names with the response from McDonald's (Q38076) Wikidata page 
         returns [
             'McDonald’s', 'McD', 'Mcdonalds', "McDonald's Corporation",
             "McDonald's Restaurant", "McDonald's", 'McDonald', "Mickey D's"
@@ -76,8 +76,8 @@ def get_description(wikidata_response):
             if the Wikidata page does not have a description
     
     Example:
-        Calling get_description with the reponse from McDonald's Wikidata page 
-        returns 'American fast food restaurant chain'
+        Calling get_description with the reponse from McDonald's (Q38076) Wikidata 
+        page returns 'American fast food restaurant chain'
     """
     
     soup = BeautifulSoup(wikidata_response.text, 'lxml')
