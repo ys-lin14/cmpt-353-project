@@ -36,7 +36,8 @@ def plot_ngram_counts(ngram_counts, title):
         ngram_counts (dataframe):
             n-grams along with their counts in the columns 'ngram' and 'count'
 
-        title (str): title of barplot for n-gram counts
+        title (str):
+            title of barplot for n-gram counts
 
     Returns:
         None
