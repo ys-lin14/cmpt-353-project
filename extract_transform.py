@@ -3,7 +3,7 @@ import pandas as pd
 
 from sklearn.feature_extraction.text import CountVectorizer
 
-def get_ngram_counts(documents, num_top_ngrams=10, ngram_range=(1, 1)):
+def get_ngram_counts(documents, num_ngrams=10, ngram_range=(1, 1)):
     """Get the counts of the most frequent n-grams within a collection 
     of documents - the variable name ngram_range was taken from the 
     documentation for sklearn's CountVectorizer 
@@ -29,7 +29,7 @@ def get_ngram_counts(documents, num_top_ngrams=10, ngram_range=(1, 1)):
     
     vectorizer = CountVectorizer(
         lowercase=False, 
-        max_features=num_top_words,
+        max_features=num_ngrams,
         ngram_range=ngram_range
     )
     
@@ -41,7 +41,7 @@ def get_ngram_counts(documents, num_top_ngrams=10, ngram_range=(1, 1)):
     ngram_counts.rename(columns={'index': 'ngram', 0: 'count'}, inplace=True)
     return ngram_counts   
 
-def sort_ngram_counts(ngram_counts):
+def sort_ngram_counts(ngram_counts, ascending=False):
     """Sort n-grams by their count 
     
     Args:
