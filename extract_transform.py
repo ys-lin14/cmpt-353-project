@@ -41,11 +41,25 @@ def get_ngram_counts(documents, num_top_ngrams=10, ngram_range=(1, 1)):
     ngram_counts.rename(columns={'index': 'ngram', 0: 'count'}, inplace=True)
     return ngram_counts   
 
-def sort_word_counts(word_counts):
-    # sort descending by word count
-    sorted_word_counts = word_counts.sort_values(
+def sort_ngram_counts(ngram_counts):
+    """Sort n-grams by their count 
+    
+    Args:
+        ngram_counts (dataframe): 
+            n-grams along with their counts in the columns 'ngram' and 'count' 
+            
+        ascending (bool): 
+            determines whether the counts are sorted in ascending or descending
+            order
+        
+    Returns:
+        sorted_ngram_counts (dataframe):
+            n-grams sorted by count
+    """
+    
+    sorted_ngram_counts = ngram_counts.sort_values(
         by=['count'],
-        ascending=False
+        ascending=ascending
     )
-    sorted_word_counts.reset_index(drop=True, inplace=True)
-    return sorted_word_counts
+    sorted_ngram_counts.reset_index(drop=True, inplace=True)
+    return sorted_ngram_counts
