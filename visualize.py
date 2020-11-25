@@ -29,7 +29,7 @@ def plot_wordcloud(text):
     plt.axis('off')
     plt.show()
 
-def plot_ngram_counts(ngram_counts, title):
+def plot_ngram_counts(ngram_counts, title, xlabel):
     """Plot n-grams along with their counts
 
     Args:
@@ -45,7 +45,7 @@ def plot_ngram_counts(ngram_counts, title):
     
     num_ngram = ngram_counts.shape[0]
     ngram_count_plot = sns.barplot(data=ngram_counts, x='ngram', y='count')
-    ngram_count_plot.set(title=title, xlabel='N-gram', ylabel='Count')
-    xlabels = ngram_count_plot.get_xticklabels()
-    ngram_count_plot.set_xticklabels(xlabels, rotation=30, ha='right')
+    ngram_count_plot.set(title=title, xlabel=xlabel, ylabel='Count')
+    x_ticks = ngram_count_plot.get_xticklabels()
+    ngram_count_plot.set_xticklabels(x_ticks, rotation=30, ha='right')
     plt.show()
