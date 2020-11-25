@@ -23,8 +23,8 @@ def get_ngram_counts(documents, num_ngrams=10, ngram_range=(1, 1)):
         
     Returns:
         ngram_counts (dataframe): 
-            contains the top n-grams along with their counts 
-            in 'ngram' and 'count' columns
+            contains the top n-grams along with their counts in 'ngram' and
+            'count' columns
     """
     
     vectorizer = CountVectorizer(
@@ -62,4 +62,33 @@ def sort_ngram_counts(ngram_counts, ascending=False):
         ascending=ascending
     )
     sorted_ngram_counts.reset_index(drop=True, inplace=True)
+    return sorted_ngram_counts
+
+def get_sorted_ngram_counts(documents, num_ngrams=10, ngram_range=(1, 1), ascending=False):
+    """Get n-grams sorted by their count
+
+    Args:
+        documents (series): 
+            preprocessed names or description columns from
+            preprocessed_wikidata.json 
+            
+        num_top_ngrams (int):
+            number of top n-grams to be returned
+            
+        ngram_range (tuple):
+            range of n-grams to be counted - (1, 1) returns single words
+            and their counts, (1, 2) for single words and pairs of words, 
+            (2, 2) for pairs of words, etc
+
+        ascending (bool): 
+            determines whether the counts are sorted in ascending or descending
+            order
+
+    Returns:
+        sorted_ngram_counts (dataframe):
+            n-grams sorted by count
+    """
+    
+    ngram_counts = get_ngram_counts(documents, num_ngrams, ngram_range)
+    sorted_ngram_counts = sort_ngram_counts(ngram_counts, ascending)
     return sorted_ngram_counts
