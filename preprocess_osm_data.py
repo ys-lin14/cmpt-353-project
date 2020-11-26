@@ -1,6 +1,24 @@
 import pandas as pd
 import sys
 
+def get_qid(tags):
+    """Get the OSM entry's Wikidata identifier (QID) from the tags field in 
+    amenities-vancouver.json.gz
+    
+    Args:
+        tags (dict): contains the tags for the OSM entry
+        
+    Returns
+        qid (str or None): QID if the entry is on Wikidata, else None
+    """
+    
+    try:
+        qid = tags['brand:wikidata']
+    except:
+        qid = None
+        
+    return qid
+
 def main(input_file, output_file):
     """Preprocess OSM data by filling in wikidata identifiers (qid)
     for OSM entries that have a Wikidata entry but are not associated with one.
@@ -12,13 +30,16 @@ def main(input_file, output_file):
             from amenities-vancouver.json.gz along with an additional column
             for qid
             
-            
         output_file (str):
             json file in which some qids have been filled in
     """
+    # trailing data error - line adapted from
+    # https://stackoverflow.com/questions/30088006/
+    osm_data = pd.read_json(input_file, read_lines=True)
 
-    osm_data = pd.read_json(input_file)
-
+    # osm_data['qid'] = osm_data['tags'].apply(get_qid)
+    
+    
     has_qid = osm_data['qid'].notna()
     has_name = osm_data['name'].notna()
 
