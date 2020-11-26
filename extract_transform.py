@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import re
 
 from sklearn.feature_extraction.text import CountVectorizer
 
@@ -92,3 +93,19 @@ def get_sorted_ngram_counts(documents, num_ngrams=10, ngram_range=(1, 1), ascend
     ngram_counts = get_ngram_counts(documents, num_ngrams, ngram_range)
     sorted_ngram_counts = sort_ngram_counts(ngram_counts, ascending)
     return sorted_ngram_counts
+
+def get_match(pattern, text):
+    """Get the regex match object for pattern from text
+    
+    Args:
+        pattern (str): pattern to be matched
+        
+        text (str): Wikidata description
+        
+    Returns:
+        match (regex match / None): 
+            regex match object if pattern was found, else None
+    """
+    
+    match = re.search(pattern, text)
+    return match
