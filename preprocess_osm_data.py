@@ -1,23 +1,24 @@
 import pandas as pd
 import sys
 
-def get_qid(tags):
+def get_tag_data(tags, tag_name):
     """Get the OSM entry's Wikidata identifier (QID) from the tags field in 
     amenities-vancouver.json.gz
     
     Args:
         tags (dict): contains the tags for the OSM entry
+        tag_name (str): key for the tag data
         
     Returns
-        qid (str or None): QID if the entry is on Wikidata, else None
+        tag_data (str or None): tag data if the tag_name is a valid key, else None
     """
     
     try:
-        qid = tags['brand:wikidata']
+        tag_data = tags[tag_name]
     except:
-        qid = None
+        tag_data = None
         
-    return qid
+    return tag_data
 
 def main(input_file, output_file):
     """Preprocess OSM data by filling in wikidata identifiers (qid)
@@ -37,8 +38,9 @@ def main(input_file, output_file):
     # https://stackoverflow.com/questions/30088006/
     osm_data = pd.read_json(input_file, read_lines=True)
 
-    # osm_data['qid'] = osm_data['tags'].apply(get_qid)
-    
+    osm_data['qid'] = osm_data['tags'].apply(
+        lambda tags: get_qid(tags, 'brand:wikidata')
+    )
     
     has_qid = osm_data['qid'].notna()
     has_name = osm_data['name'].notna()
