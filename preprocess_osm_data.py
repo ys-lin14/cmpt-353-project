@@ -36,7 +36,7 @@ def main(input_file, output_file):
     """
     # trailing data error - line adapted from
     # https://stackoverflow.com/questions/30088006/
-    osm_data = pd.read_json(input_file, read_lines=True)
+    osm_data = pd.read_json(input_file, lines=True)
 
     osm_data['qid'] = osm_data['tags'].apply(
         lambda tags: get_tag_data(tags, 'brand:wikidata')
