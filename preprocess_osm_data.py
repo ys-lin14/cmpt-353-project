@@ -39,7 +39,10 @@ def main(input_file, output_file):
     osm_data = pd.read_json(input_file, read_lines=True)
 
     osm_data['qid'] = osm_data['tags'].apply(
-        lambda tags: get_qid(tags, 'brand:wikidata')
+        lambda tags: get_tag_data(tags, 'brand:wikidata')
+    )
+    osm_data['cuisine'] = osm_data['tags'].apply(
+        lambda tags: get_tag_data(tags, 'cuisine')
     )
     
     has_qid = osm_data['qid'].notna()
