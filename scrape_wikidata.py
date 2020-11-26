@@ -6,24 +6,6 @@ import time
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-def get_qid(tags):
-    """Get the OSM entry's Wikidata identifier (QID) from the tags field in 
-    amenities-vancouver.json.gz
-    
-    Args:
-        tags (dict): contains the tags for the OSM entry
-        
-    Returns
-        qid (str or None): QID if the entry is on Wikidata, else None
-    """
-    
-    try:
-        qid = tags['brand:wikidata']
-    except:
-        qid = None
-        
-    return qid
-
 def scrape_wikidata(qid):
     """Request the identifier's Wikidata page 
     
@@ -87,23 +69,17 @@ def get_description(wikidata_response):
         description = ''
     return description
 
-def main(input_file, osm_output_file, wikidata_output_file):
+def main(input_file, output_file):
     """Scrape Wikidata entries for their names and descriptions.
-        - write OSM data with a column for the Wikidata identifier (qid)
-          to osm_output_file
         - write the qid, names and description of the Wikidata entries to
-          wikidata_output_file
+          output_file
 
     Args:
         input_file (str):
-            file provided for OSM, Photos, and Tours
-            ('amenities-vancouver.json')
+            json file from running preprocess_osm_data.py with the provided 
+            'amenities-vancouver.json.gz'
 
-        osm_output_file (str):
-            json output file containing the original OSM data with an
-            additional column for the Wikidata identifier
-
-        wikidata_output_file (str):
+        output_file (str):
             json output file containing qid, names and descriptions of
             the Wikidata entries
 
@@ -112,17 +88,13 @@ def main(input_file, osm_output_file, wikidata_output_file):
 
     Notes:
         - It takes approximately 1 to 2 seconds to scrape each Wikidata
-          entry. Running the program with the provided OSM data may take
+          entry. Running the program with the preprocessed OSM data may take
           a few minutes.
         - Upon receiving a bad request the program will stop scraping Wikidata
           and process the data it managed to retrieve.
     """
     
-    # trailing data error - line adapted from
-    # https://stackoverflow.com/questions/30088006/
-    osm_data = pd.read_json(input_file, lines=True)
-
-    osm_data['qid'] = osm_data['tags'].apply(get_qid)
+    osm_data = pd.read_json(input_file)
     unique_qids = osm_data['qid'].dropna().unique()
 
     # create dict with (qid, response) key value pairs
@@ -153,11 +125,8 @@ def main(input_file, osm_output_file, wikidata_output_file):
         wikidata['qid'].apply(lambda qid: get_description(wikidata_responses[qid]))
     )
 
-    # write osm_data with qid column to json
-    osm_data.to_json(osm_output_file)
-
     # write wikidata qid, names and description to json
-    wikidata.to_json(wikidata_output_file)
+    wikidata.to_json(output_file)
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    main(sys.argv[1], sys.argv[2])
