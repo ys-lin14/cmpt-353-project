@@ -109,3 +109,61 @@ def get_match(pattern, text):
     
     match = re.search(pattern, text)
     return match
+
+def get_chain_restaurant_qids(chain_restaurant_wikidata):
+    """Get a dictionary which maps chain restaurant qids to 1
+    
+    Args:
+        chain_restaurant_wikidata (dataframe):
+            Wikidata for chain restaurants 
+        
+    Returns:
+        chain_restaurant_qids (dict):
+            contains (qid, 1) key value pairs for qids associated
+            with chain restaurants
+    """
+    
+    num_chain_restaurant_qids = chain_restaurant_wikidata.shape[0]
+    chain_restaurant_qids = dict(zip(
+        chain_restaurant_wikidata['qid'], 
+        np.ones(num_chain_restaurant_qids, dtype=int)
+    ))
+    return chain_restaurant_qids
+    
+def get_num_chain_restaurants(osm_data, chain_restaurant_qids):
+    """Get the (estimated) number of chain restaurants from the OSM data
+    using chain restaurant qids
+    
+    Args:
+        osm_data (dataframe):
+            OSM data preprocessed using preprocess_osm_data.py
+        
+    Returns:
+        num_chain_restaurants (int):
+            the number of chain restaurants within the OSM data
+    """
+    
+    num_chain_restaurants = osm_data['qid'].map(chain_restaurant_qids).sum()
+    num_chain_restaurants = int(num_chain_restaurants)
+    return num_chain_restaurants
+
+def display_num_chain_qid_restaurants(chain_restaurant_qids, num_chain_restaurants):
+    """Print the number of chain restaurant qids and chain restaurants
+    within the OSM data
+    
+    Args:
+        chain_restaurant_qids (dict):
+            contains (qid, 1) key value pairs for qids related to 
+            chain restaurants
+            
+        num_chain_restaurants (int):
+            the number of chain restaurants within the OSM data
+    
+    Returns:
+        None
+    """
+    
+    num_chain_restaurant_qids = len(chain_restaurant_qids)
+    print('Number of Wikidata Entries about Chain Restaurants: ', end='')
+    print(num_chain_restaurant_qids)
+    print(f'Number of Chain Restaurants: {num_chain_restaurants}')
