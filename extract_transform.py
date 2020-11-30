@@ -146,24 +146,3 @@ def get_num_chain_restaurants(osm_data, chain_restaurant_qids):
     num_chain_restaurants = osm_data['qid'].map(chain_restaurant_qids).sum()
     num_chain_restaurants = int(num_chain_restaurants)
     return num_chain_restaurants
-
-def display_num_chain_qid_restaurants(chain_restaurant_qids, num_chain_restaurants):
-    """Print the number of chain restaurant qids and chain restaurants
-    within the OSM data
-    
-    Args:
-        chain_restaurant_qids (dict):
-            contains (qid, 1) key value pairs for qids related to 
-            chain restaurants
-            
-        num_chain_restaurants (int):
-            the number of chain restaurants within the OSM data
-    
-    Returns:
-        None
-    """
-    
-    num_chain_restaurant_qids = len(chain_restaurant_qids)
-    print('Number of Wikidata Entries about Chain Restaurants: ', end='')
-    print(num_chain_restaurant_qids)
-    print(f'Number of Chain Restaurants: {num_chain_restaurants}')
