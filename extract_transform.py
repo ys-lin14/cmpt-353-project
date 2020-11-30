@@ -146,3 +146,42 @@ def get_num_chain_restaurants(osm_data, chain_restaurant_qids):
     num_chain_restaurants = osm_data['qid'].map(chain_restaurant_qids).sum()
     num_chain_restaurants = int(num_chain_restaurants)
     return num_chain_restaurants
+
+def num_to_long_df(num_chain_qids, num_chains, approach):
+    """Create a dataframe using the number of chain restaurant qids 
+    and chain restaurants 
+    
+    Args:
+        num_chain_qids (int): 
+            number of qids for chain restaurants 
+        
+        num_chains (int): 
+            number of chain restaurants 
+        
+        approach (str): 
+            whether the numbers were obtained from the 'regex' or
+            'mixed' approach
+        
+    Returns:
+        long_df (dataframe): 
+            contains the number of chain restaurants and chain restaurant
+            qids from the given approach
+        
+    Example:
+        calling num_to_long_df with updated number of chain restaurant and
+        chain restaurant qids from the mixed approach returns
+        
+            type         value    approach
+        0   wikidata     45       mixed
+        1   restaurant   746      mixed
+    """
+    
+    data = {
+        'wikidata': num_chain_qids,
+        'restaurant': num_chains,
+        'approach': approach
+    }
+    # index=[0] adapted from https://stackoverflow.com/questions/17839973/
+    df = pd.DataFrame(data, index=[0])
+    long_df = pd.melt(df, id_vars=['approach'], var_name='type')
+    return long_df[['type', 'value', 'approach']]
