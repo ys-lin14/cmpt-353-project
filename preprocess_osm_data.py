@@ -2,8 +2,7 @@ import pandas as pd
 import sys
 
 def get_tag_data(tags, tag_name):
-    """Get the OSM entry's Wikidata identifier (QID) from the tags field in 
-    amenities-vancouver.json.gz
+    """Get a tag from the OSM entry's tags column 
     
     Args:
         tags (dict): contains the tags for the OSM entry
