@@ -1,23 +1,6 @@
 import pandas as pd
 import sys
-
-def get_tag_data(tags, tag_name):
-    """Get a tag from the OSM entry's tags column 
-    
-    Args:
-        tags (dict): contains the tags for the OSM entry
-        tag_name (str): key for the tag data
-        
-    Returns
-        tag_data (str or None): tag data if the tag_name is a valid key, else None
-    """
-    
-    try:
-        tag_data = tags[tag_name]
-    except:
-        tag_data = None
-        
-    return tag_data
+from transform import get_tag_data
 
 def main(input_file, output_file):
     """Preprocess OSM data by filling in wikidata identifiers (qid)

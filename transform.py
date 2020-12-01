@@ -4,6 +4,24 @@ import re
 
 from sklearn.feature_extraction.text import CountVectorizer
 
+def get_tag_data(tags, tag_name):
+    """Get a tag from the OSM entry's tags column 
+    
+    Args:
+        tags (dict): contains the tags for the OSM entry
+        tag_name (str): key for the tag data
+        
+    Returns
+        tag_data (str or None): tag data if the tag_name is a valid key, else None
+    """
+    
+    try:
+        tag_data = tags[tag_name]
+    except:
+        tag_data = None
+        
+    return tag_data
+
 def get_ngram_counts(documents, num_ngrams=10, ngram_range=(1, 1)):
     """Get the counts of the most frequent n-grams within a collection 
     of documents - the variable name ngram_range was taken from the 
