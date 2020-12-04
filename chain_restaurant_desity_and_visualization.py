@@ -6,6 +6,27 @@ import pandas as pd
 def make_matrix(location, size):
     return [location for i in range(size)]
 
+def nonRestaurestaurant(): 
+    return [
+    'ATLAS_clean_room' ,'EVSE','Observation Platform' ,'Pharmacy','animal_shelter','arts_centre','atm','atm;bank',
+    'bank','bench','bicycle_parking','bicycle_rental','bicycle_repair_station','car_rental','car_rep','car_sharing',
+    'car_wash','casino','charging_station','childcare','chiropractor','cinema','clinic','clock','college',
+    'community_centre','compressed_air','conference_centre','construction','courthouse','cram_school','dentist',
+    'events_venue','family_centre','ferry_terminal','fire_station','first_aid','fountain','fuel','gambling','gym',
+    'healthcare','hospital','housing co-op','hunting_stand','kindergarten','language_school','leisure','letter_box',
+    'library','loading_dock','lobby','lounge','luggage_locker','marketplace','meditation_centre','monastery',
+    'money_transfer','motorcycle_parking','motorcycle_rental','music_school','nightclub','nursery',
+    'office|financial','park','parking','parking_entrance','parking_space','payment_terminal','pharmacy',
+    'photo_booth','place_of_worship','playground','police','post_box','post_depot','post_office','prep_school',
+    'public_bookcase','public_building','ranger_station','recycling','research_institute','safety',
+    'sanitary_dump_station','school','science','scrapyard','seaplane terminal','shelter','shop|clothes','shower',
+    'smoking_area','social_centre','social_facility','spa','storage','storage_rental','stripclub','studio',
+    'taxi','telephone','theatre','toilets','townhall','training','trash','trolley_bay','university','vacuum_cleaner',
+    'vending_machine','driving_school','veterinary','waste_basket','waste_disposal','waste_transfer_station',
+    'water_point','watering_place','workshop''bureau_de_change','bus_station','internet_cafe', 'doctors',
+    'dojo','bureau_de_change', 'boat_rental', 'workshop', 'drinking_water'
+
+    ]
     
 
 def main(file1, file2, location1, location2, dist):
@@ -17,6 +38,12 @@ def main(file1, file2, location1, location2, dist):
     # merge osm_data and chain_qid to identify chain restaurants in 
     osm_data=osm_data.merge(chain_qids, how='left', on='qid')
     osm_data['is_chain_restaurant']=osm_data.is_chain_restaurant.fillna(0)
+    
+    # filter restaurants from non restaurant in osm_data
+    amenity=osm_data['amenity']
+    restaurant=list(dict.fromkeys([i for i in amenity if i not in nonRestaurestaurant()]))
+    #print(restaurant)
+    osm_data=osm_data[osm_data['amenity'].isin(restaurant)]
     
     size=osm_data.lat.size
     
