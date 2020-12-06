@@ -1,7 +1,10 @@
 import folium
+import numpy as np
+import pandas as pd
+
 from folium.plugins import HeatMap
 from haversine import haversine, Unit, haversine_vector
-import pandas as pd
+from scipy.stats import chi2_contingency
 
 def make_matrix(location, size):
     return [location for i in range(size)]
@@ -77,23 +80,21 @@ def main(file1, file2, location1, location2, dist):
     # number of non chain restaurants with chosen distance of location 2
     dist2_and_nonchain=osm_data[(osm_data.dist2<dist)&(osm_data.is_chain_restaurant==0)].shape[0]
     
-    
-   
-    
-    #Chi-Squared with the filtered data to compare the density of chain restaurants by two locations
-    location = {
-        'location 1': [dist1_and_nonchain, dist2_and_nonchain],
-        'location 2': [dist1_and_chain, dist2_and_chain]
-    }
-    chi_squared=pd.DataFrame(location, 
-        columns = [ 'location 1', 'location 2'],
-        index=['chain restaurant', 'non chain restaurant']
-    )
-    print(chi_squared)
-    
+
+    # perform chi-squared with filtered distances to compare
+    # chain restaurant densities in locations 1 and 2 - Derek
+    restaurant_contingency = np.array([
+        [dist1_and_nonchain, dist1_and_chain],
+        [dist2_and_nonchain, dist2_and_chain]
+    ])
+    print('Restaurant and Chain Restaurant Counts')
+    print('Location 1:', restaurant_contingency[0, :])
+    print('Location 2:', restaurant_contingency[1, :])
+        
+    p_value = chi2_contingency(restaurant_contingency)[1]
+    print(f'Chi-squared p-value: {p_value}')
     
     # for map visualization
-    
     # put a marker on location 1 and 2 on map
     m3=folium.Map(location=location2, zoom_start=100)
     folium.Marker(location1, popup='<b>Location 1</b>').add_to(m3)
@@ -116,8 +117,6 @@ def main(file1, file2, location1, location2, dist):
         folium.CircleMarker(non_chain_restaurant[i], radius=2, color='red', s=25, fill=True).add_to(m3)
         
     m3.save('map.html')
-    display(m3)
-    
     
     # For heat map visualization - with similar procedure
     m=folium.Map(location=location2, zoom_start=100)
@@ -126,10 +125,6 @@ def main(file1, file2, location1, location2, dist):
     latlons = osm_data[["lat","lon"]].values
     HeatMap(latlons).add_to(m)
     m.save('heat_map.html')
-    display(m)
-    
-
-
 
 if __name__ == '__main__':
     # default intializations
