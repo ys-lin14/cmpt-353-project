@@ -155,6 +155,10 @@ def get_num_chain_restaurants(osm_data, chain_restaurant_qids):
     Args:
         osm_data (dataframe):
             OSM data preprocessed using preprocess_osm_data.py
+            
+        chain_restaurant_qids (dict):
+            contains (qid, 1) key value pairs for qids associated
+            with chain restaurants
         
     Returns:
         num_chain_restaurants (int):
@@ -203,3 +207,44 @@ def num_to_long_df(num_chain_qids, num_chains, approach):
     df = pd.DataFrame(data, index=[0])
     long_df = pd.melt(df, id_vars=['approach'], var_name='type')
     return long_df[['type', 'value', 'approach']]
+
+def get_restaurant_amenities(osm_data):
+    """Get a dictionary which maps restaurant amenities to 1
+    
+    Args:
+        osm_data (dataframe):
+            OSM data preprocessed using preprocess_osm_data.py
+        
+    Returns:
+        restaurant_amenities (dict):
+            contains (amenity, 1) key value pairs for amenities associated
+            with a cuisine tag / restaurants
+    """
+    has_cuisine = osm_data['cuisine'].notna()
+    amenities = osm_data.loc[has_cuisine, 'amenity'].unique()
+    restaurant_amenities = dict(zip(
+        amenities, 
+        np.ones_like(amenities, dtype=int)
+    ))
+    return restaurant_amenities
+
+def get_num_restaurants(osm_data, restaurant_amenities):
+    """Get the (estimated) number of restaurants from the OSM data
+    using restaurant amenities
+    
+    Args:
+        osm_data (dataframe):
+            OSM data preprocessed using preprocess_osm_data.py
+            
+        restaurant_amenities (dict):
+            contains (amenity, 1) key value pairs for amenities associated
+            with restaurants
+        
+    Returns:
+        num_restaurants (int):
+            the number of restaurants within the OSM data
+    """
+    
+    num_restaurants = osm_data['amenity'].map(restaurant_amenities).sum()
+    num_restaurants = int(num_restaurants)
+    return num_restaurants
