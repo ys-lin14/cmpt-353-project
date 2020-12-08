@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import sys
 
 from scipy.cluster.hierarchy import fcluster, linkage
 from sklearn.feature_extraction.text import CountVectorizer
@@ -79,8 +80,4 @@ def main(preprocessed_osm_data, raw_wikidata, preprocessed_wikidata, output_file
     final_chain_restaurant_qids.to_json(output_file)
 
 if __name__ == '__main__':
-    preprocessed_osm_data = 'data/preprocessed-osm-data.json.gz' 
-    raw_wikidata = 'data/wikidata.json' 
-    preprocessed_wikidata = 'data/preprocessed-wikidata.json' 
-    output_file = 'data/chain-restaurant-qids.json'
-    main(preprocessed_osm_data, raw_wikidata, preprocessed_wikidata, preprocessed_wikidata)
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
