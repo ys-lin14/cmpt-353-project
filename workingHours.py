@@ -69,4 +69,72 @@ def computeHours(timecomponent):
         
         return working_hour
 
+# Compute the working hour
+def working_hour_computer(s):
+    if '24/7' in s:
+        working_hour = workingHours_tem.copy()
+        for key in working_hour:
+            working_hour[key] = 24.0
+        return working_hour
+    s = s.replace('; ', ';')
+    s = s.replace(', ', ',')
+    lst = [x.strip() for x in (s.split(';') if ';' in s else s.split(','))]
+    working_hour = workingHours_tem.copy()
+    for i in lst:
+        segs = i.split(' ')
+        segs[0] = segs[0].replace(',', '-')
+        days = segs[0].split('-')
+        if days[0] == 'PH':
+            continue
+        elif len(days) > 1 and days[1] == 'PH':
+            days[1] = days[0]
+        if days[0] not in daysOfweek or days[-1] not in daysOfweek:
+            h = computeHours(segs[0])
+            for key in working_hour:
+                working_hour[key] = h
+            return working_hour
+        start, end = dayToindex(days[0]), dayToindex(days[-1]) + 1
+        end += len(daysOfweek) if end < start else 0
+        for idx in range(start, end + 1):
+            if len(segs) > 1:
+                segs[1] = segs[1].replace('+', '')
+                working_hour[daysOfweek[idx % len(daysOfweek)]] = computeHours(segs[1])
+            else:
+                working_hour[daysOfweek[idx % len(daysOfweek)]] = computeHours("")
+    for key in working_hour:
+        if working_hour[key] == None:
+            working_hour[key] = 0.0
+    return working_hour
 
+def main():
+    input_file = sys.argv[1]
+    data = pd.read_json(input_file, lines = True)
+    # print(data)
+
+
+    #Compute working hours of food amenities
+    food = data[data['amenity'].str.contains("restaurant|food|cafe|pub|bar|ice_cream|food_court|bbq|bistro") & ~data['amenity'].str.contains("disused")]
+    food = food.dropna()
+    food = food[food.apply(lambda x: 'opening_hours' in x['tags'], axis = 1)]
+
+    food['opening_hours'] = food.apply(lambda x: working_hour_computer(x['tags']['opening_hours']), axis = 1)
+
+    food['opening_hours_per_week'] = food.apply(lambda x: sum([x['opening_hours'][day] for day in daysOfweek]), axis = 1)
+    food = food[[
+        'lat', 
+        'lon', 
+        'amenity', 
+        'tags', 
+        'opening_hours', 
+        'opening_hours_per_week'
+    ]]
+    food = food[food['opening_hours_per_week'] >= 10.0]
+    food = food.reset_index(drop = True)
+    print(food)
+
+    food.to_json("opening_hours.json", orient = 'records', lines = True)
+
+
+
+if __name__ == '__main__':
+    main()
