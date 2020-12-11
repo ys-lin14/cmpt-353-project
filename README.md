@@ -1,4 +1,4 @@
-# Required libraries
+# Required Libraries
     bs4
     folium
     gensim
@@ -12,7 +12,7 @@
     requests
     scipy
     seaborn
-    sklearn
+    scikit-learn
     sys
     time
 
