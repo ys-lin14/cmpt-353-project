@@ -132,7 +132,7 @@ def main():
     food = food.reset_index(drop = True)
     print(food)
 
-    food.to_json("opening_hours.json", orient = 'records', lines = True)
+    food.to_json("working_hours.json", orient = 'records', lines = True)
 
 
 
