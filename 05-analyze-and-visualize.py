@@ -133,7 +133,8 @@ if __name__ == '__main__':
     
     while True:
     
-        flag=int(input("Choose:\n0 - to enter your own values\n1 - to use default values: \n"))
+        # https://stackoverflow.com/questions/1841565/valueerror-invalid-literal-for-int-with-base-10
+        flag=int(float(input("Choose:\n0 - to enter your own values\n1 - to use default values: \n")))
         
     
     
