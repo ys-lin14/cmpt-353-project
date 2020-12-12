@@ -5,6 +5,9 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from gensim.utils import simple_preprocess
 
+nltk.download('stopwords')
+nltk.download('wordnet')
+
 stopwords = stopwords.words('english')
 lemmatizer = WordNetLemmatizer()
 
