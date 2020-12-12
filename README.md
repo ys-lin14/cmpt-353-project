@@ -13,6 +13,7 @@
     scipy
     seaborn
     scikit-learn
+    wordcloud
 
 # Commands, Arguments and Order of Execution
 **Main Pipeline**
