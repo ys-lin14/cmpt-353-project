@@ -16,7 +16,15 @@
     wordcloud
 
 # Commands, Arguments and Order of Execution
-**Main Pipeline**
+**Main Pipeline (Linux)**
+
+    python3 01-preprocess-osm-data.py data/amenities-vancouver.json.gz data/preprocessed-osm-data.json.gz
+    python3 02-scrape-wikidata.py data/preprocessed-osm-data.json.gz data/wikidata.json
+    python3 03-preprocess-wikidata.py data/wikidata.json data/preprocessed-wikidata.json
+    python3 04-identify-chain-restaurants.py data/preprocessed-osm-data.json.gz data/wikidata.json data/preprocessed-wikidata.json data/chain-restaurant-qids.json
+    python3 05-analyze-and-visualize.py 
+
+**Main Pipeline (Windows)**
 
     01-preprocess-osm-data.py data/amenities-vancouver.json.gz data/preprocessed-osm-data.json.gz
     02-scrape-wikidata.py data/preprocessed-osm-data.json.gz data/wikidata.json
