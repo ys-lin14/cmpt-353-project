@@ -17,9 +17,9 @@
 # Commands, Arguments and Order of Execution
 **Main Pipeline**
 
-    01-preprocess-osm-data.py data/amenities-vancouver.json.gz data/preprocessed-osm_data.json.gz
-    02-scrape-wikidata.py data/preprocessed-osm_data.json.gz data/wikidata.json
-    03-preprocess-wikidata.py data/wikidata.json data/preprocessed_wikidata.json
+    01-preprocess-osm-data.py data/amenities-vancouver.json.gz data/preprocessed-osm-data.json.gz
+    02-scrape-wikidata.py data/preprocessed-osm-data.json.gz data/wikidata.json
+    03-preprocess-wikidata.py data/wikidata.json data/preprocessed-wikidata.json
     04-identify-chain-restaurants.py data/preprocessed-osm-data.json.gz data/wikidata.json data/preprocessed-wikidata.json data/chain-restaurant-qids.json
     05-analyze-and-visualize.py 
 
