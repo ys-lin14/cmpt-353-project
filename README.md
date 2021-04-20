@@ -79,9 +79,6 @@
     identify_restaurants.ipynb
          input: preprocessed-osm-data.json.gz, chain-restaurant-qids.json
         output: None
-
-# Other - Project Planning / Notes / Report 
-https://docs.google.com/document/d/1hRqKuATGqSuzJBPyZvFewi4v1Qc9qja8qKg3TIALynw/edit
     
 
 
