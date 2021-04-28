@@ -1,3 +1,31 @@
+Please refer to project_report.pdf for more details.
+
+# Results
+
+**Word Cloud and Count Plot for Wikidata Descriptions**<br>
+![Word Cloud and Count Plot for Wikidata Descriptions](https://github.com/ys-lin14/cmpt-353-project/blob/master/screenshots/word_cloud_count_plot.PNG?raw=true)
+<br><br>
+
+**Visualization of Predictions**<br>
+![Chain Restaurants and Non-Chain Restaurants](https://github.com/ys-lin14/cmpt-353-project/blob/master/screenshots/predictions.PNG?raw=true)
+<br><br>
+
+# General Process
+**1. Data Extraction**<br>
+![Wikidata for Starbucks](https://github.com/ys-lin14/cmpt-353-project/blob/master/screenshots/data_extraction.PNG?raw=true)
+<br><br>
+
+**2. Preprocessing**<br>
+![Preprocessing OSM Data](https://github.com/ys-lin14/cmpt-353-project/blob/master/screenshots/data_preprocessing.PNG?raw=true)
+<br><br>
+
+![Wikidata Description for Swiss Chalet](https://github.com/ys-lin14/cmpt-353-project/blob/master/screenshots/text_processing.PNG?raw=true)
+<br><br>
+
+**3. Clustering**<br>
+![Clustering Steps](https://github.com/ys-lin14/cmpt-353-project/blob/master/screenshots/flow_chart.PNG?raw=true)
+<br><br>
+
 # Required Libraries
     bs4
     folium
