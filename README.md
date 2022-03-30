@@ -1,5 +1,3 @@
-Please refer to project_report.pdf for more details.
-
 # Results
 
 **Word Cloud and Count Plot for Wikidata Descriptions**<br>
